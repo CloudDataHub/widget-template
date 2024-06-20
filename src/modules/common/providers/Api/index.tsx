@@ -9,8 +9,7 @@ const baseState: IApiContext = {
   isLoading: false,
   api: null
 }
-
-const ApiContext = createContext<IApiContext>(baseState);
+export const ApiContext = createContext<IApiContext>(baseState);
 
 export const ApiProvider = ({ children }: PropsWithChildren) => {
   const [apiState, setApiState] = useState({...baseState, isInitialized: true})
