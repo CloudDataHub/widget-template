@@ -9,7 +9,6 @@ function App() {
     <WidgetPropsProvider>
       <ApiProvider>
         <ExampleComponent/>
-        test
       </ApiProvider>
     </WidgetPropsProvider>
   );

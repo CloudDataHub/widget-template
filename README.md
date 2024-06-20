@@ -1,46 +1,63 @@
-# Getting Started with Create React App
+## Widget Template Documentation
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This documentation will guide you through creating widgets using the provided widget template. The template leverages React and is configured to generate a single HTML file containing HTML, CSS, and JS upon building the application. This approach is necessary as the widget will be displayed on the platform through an iframe.
 
-## Available Scripts
+### Key Considerations
 
-In the project directory, you can run:
+- **No Static Files**: Since the widget runs within an iframe, you cannot use static files (like PNG images, fonts, etc.). If you need to use such files, they must be uploaded to external storage (e.g., an AWS S3 bucket) and linked accordingly.
+- **Performance Impact**: Be mindful of the widget size. A larger widget can increase the load on the user's PC.
 
-### `npm start`
+### Required Libraries
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+To work with the platform, use the `creo-widgets-lib` library, which provides two main functionalities:
+1. **Fetching Parameters**: Parameters passed to the iframe by the main platform.
+2. **Server Interaction**: Methods to interact with the server.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Getting Started
 
-### `npm test`
+#### Installing Dependencies
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+First, ensure you have the necessary dependencies installed:
 
-### `npm run build`
+```bash
+npm install creo-widgets-lib
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### Fetching Parameters
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+To fetch parameters passed to the iframe, use the `getQueries` function from the `creo-widgets-lib` library:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```javascript
+import { getQueries } from "creo-widgets-lib/lib/query";
 
-### `npm run eject`
+const queries = getQueries();
+console.log(queries);
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### Interacting with the Server
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+To interact with the server, import the relevant APIs from `creo-widgets-lib`:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```javascript
+import { ConnectionApi, DocumentApi, WidgetApi } from "creo-widgets-lib";
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- **ConnectionApi**: Used to fetch connection parameters to the database. These are needed for the `DocumentApi`.
+- **DocumentApi**: Allows CRUD operations with the collection connected to the widget.
+- **WidgetApi**: Enables updating and retrieving data specific to the widget. This is useful for storing widget-specific states, such as selected filters in a table or the currently open page number in a paginated widget. This ensures that the widget's data persists even after refreshing the page.
 
-## Learn More
+### Building the Widget
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+When you are ready to build your widget, use the following command:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm run build
+```
+
+This command will generate a single HTML file containing all the necessary HTML, CSS, and JS. Ensure that any required static files are hosted externally and referenced via links.
+
+### Deployment
+
+Once built, you can deploy your widget by uploading the generated HTML file to the platform where it will be rendered within an iframe.
+
+By following these guidelines, you can create efficient and effective widgets that integrate seamlessly with the platform, providing a rich user experience while maintaining performance.
