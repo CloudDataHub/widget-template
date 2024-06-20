@@ -3759,10 +3759,10 @@ cosmiconfig@^7.0.0:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
-creo-widgets-lib@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/creo-widgets-lib/-/creo-widgets-lib-1.1.0.tgz"
-  integrity sha512-C/mC5HjuRFSIaRie/YAtnsPHCD9nyoXOZ7c6FXQUcDA0KRZ/sbvM+3A5DETytPXmyk0yUq8WnUBZr917g4hzPw==
+creo-widgets-lib@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/creo-widgets-lib/-/creo-widgets-lib-1.1.1.tgz"
+  integrity sha512-7GBVIYcYouSN3TYkz5aFwlP+qvRdMEL9oRn3x0cQ4NaMqYANQui4JjNKn9y5Q0OSKaqtpOtzzT2XEHjCdTY0NQ==
   dependencies:
     axios "^1.7.2"
 
