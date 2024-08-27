@@ -1,6 +1,6 @@
 import {PropsWithChildren, useEffect, useState} from "react";
 import {createContext} from "react";
-import {ConnectionApi, DocumentApi, WidgetApi} from "creo-widgets-lib";
+import {ConnectionApi, DocumentApi, FlowApi, WidgetApi, WidgetGroupConfigApi} from "creo-widgets-lib";
 import {IApiContext} from "../WidgetProps/interface";
 
 const baseState: IApiContext = {
@@ -24,8 +24,10 @@ export const ApiProvider = ({ children }: PropsWithChildren) => {
         
         const widgetApi = new WidgetApi()
         const documentApi = new DocumentApi(connectionData)
+        const flowApi = new FlowApi()
+        const widgetGroupConfigApi = new WidgetGroupConfigApi()
         
-        const api = {documentApi, widgetApi}
+        const api = {documentApi, widgetApi, flowApi, widgetGroupConfigApi}
         
         setApiState(prevState => ({...prevState, isLoading: false, api }))
       }catch (e) {
