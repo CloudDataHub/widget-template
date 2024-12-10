@@ -1,6 +1,6 @@
 import {PropsWithChildren} from "react";
-import {getQueries} from "creo-widgets-lib/lib/query";
 import {createContext} from "react";
+import {getQueries} from "creo-widgets-base/lib/query";
 
 export const WidgetPropsProviderContext = createContext(getQueries());
 

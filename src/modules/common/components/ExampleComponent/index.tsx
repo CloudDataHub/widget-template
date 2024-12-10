@@ -1,20 +1,20 @@
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Box, Button, Typography} from "@mui/material";
-import {useSocket} from "../../providers/Ws";
-import {ApiContext} from "../../providers/Api";
+import {flowApi} from "../../api";
+import {PostMessageEvents} from "creo-widgets-base/lib/enums";
+import {useEvents} from "../../providers/EventHandler";
 
 export const ExampleComponent = ()=>{
-  const ws = useSocket()
-  const {api} = useContext(ApiContext)
+  const eventHandler = useEvents()
   const [isLoading, setIsLoading] = useState(false)
   const [flowResult, setFlowResult] = useState(null)
   
+  
   useEffect(()=>{
     const callback = console.log
-    ws.setConfigChangedCallback(callback)
-    return ()=> ws.removeConfigChangedCallback(callback)
+    eventHandler.setCallback({event: PostMessageEvents.GROUP_CONFIG_CHANGED, callback})
+    return ()=> eventHandler.removeCallback(PostMessageEvents.GROUP_CONFIG_CHANGED)
   },[])
-
   
   
   const handleLoadingStart = ()=>{
@@ -25,12 +25,10 @@ export const ExampleComponent = ()=>{
   }
   
   const executeFlow = async ()=>{
-    if(api?.flowApi){
-      const flowResponse = await api.flowApi.execute<any>(
+      const flowResponse = await flowApi.execute<any>(
         {context: {testData: [1,2,3]}, contextKey: 'default'},
         {onStart: handleLoadingStart, onFinish: handleLoadingFinish})
       setFlowResult(flowResponse.result)
-    }
   }
   
   return(
