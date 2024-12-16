@@ -1,11 +1,20 @@
-import {useContext, useEffect, useState} from "react";
-import {ApiContext} from "../../providers/Api";
-import {Box, Typography} from "@mui/material";
+import {useEffect, useState} from "react";
+import {Box, Button, Typography} from "@mui/material";
+import {flowApi} from "../../api";
+import {PostMessageEvents} from "creo-widgets-base/lib/enums";
+import {useEvents} from "../../providers/EventHandler";
 
 export const ExampleComponent = ()=>{
-  const {api} = useContext(ApiContext)
+  const eventHandler = useEvents()
   const [isLoading, setIsLoading] = useState(false)
-  const [documents, setDocuments] = useState(null)
+  const [flowResult, setFlowResult] = useState(null)
+  
+  
+  useEffect(()=>{
+    const callback = console.log
+    eventHandler.setCallback({event: PostMessageEvents.GROUP_CONFIG_CHANGED, callback})
+    return ()=> eventHandler.removeCallback(PostMessageEvents.GROUP_CONFIG_CHANGED)
+  },[])
   
   
   const handleLoadingStart = ()=>{
@@ -15,26 +24,22 @@ export const ExampleComponent = ()=>{
     setIsLoading(false)
   }
   
-  useEffect(()=>{
-    const getDocuments = async () =>{
-      if(api){
-        const result = await api.documentApi.get(
-          {pageNumber: 1, limit: 10},
-          {onStart: handleLoadingStart, onFinish: handleLoadingFinish}
-        )
-        setDocuments(result)
-      }
-    }
-    
-    getDocuments()
-
-  }, [api])
+  const executeFlow = async ()=>{
+      const flowResponse = await flowApi.execute<any>(
+        {context: {testData: [1,2,3]}, contextKey: 'default'},
+        {onStart: handleLoadingStart, onFinish: handleLoadingFinish})
+      setFlowResult(flowResponse.result)
+  }
   
   return(
     <Box>
+      <Button onClick={executeFlow}>
+        Execute Flow
+      </Button>
+      
       <Typography>
         {isLoading && "isLoading"}
-        {documents && JSON.stringify(documents)}
+        {flowResult && JSON.stringify(flowResult)}
       </Typography>
     </Box>
   )
